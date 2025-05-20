@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapEdit - Web chỉnh sửa ảnh AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0 solid #e5e7eb;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            line-height: 1.5;
+            background-color: #f7f7f7;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #252638;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #5c5d6b;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        nav ul li a:hover {
+            color: #0051ef;
+        }
+
+        .try-free-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: #0051ef;
+            color: #fff;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .try-free-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 5rem 1rem;
+            background: linear-gradient(138.69deg, #0dffff -2.74%, #0051ef 39.11%, #a400bf 98.64%);
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 56px;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            margin-bottom: 2rem;
+            max-width: 720px;
+        }
+
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: 56px;
+                line-height: 72px;
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .features h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #252638;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .feature-card {
+            background-color: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0px 12px 32px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #252638;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #5c5d6b;
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .features h2 {
+                font-size: 44px;
+                line-height: 56px;
+            }
+        }
+
+        /* Stats Section */
+        .stats {
+            background-color: #1f2937;
+            padding: 4rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+        }
+
+        .stats h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            line-height: 2.25rem;
+        }
+
+        .stat-item p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: hsla(0, 0%, 100%, 0.64);
+        }
+
+        @media (min-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .stats h2 {
+                font-size: 44px;
+                line-height: 56px;
+            }
+        }
+
+        /* Download Section */
+        .download {
+            padding: 5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .download h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #252638;
+            margin-bottom: 1rem;
+        }
+
+        .download p {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            color: #5c5d6b;
+            margin-bottom: 2rem;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .download-links img {
+            width: 1000px;
+            height: auto;
+        }
+
+        @media (min-width: 1024px) {
+            .download h2 {
+                font-size: 44px;
+                line-height: 56px;
+            }
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .faq h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #212b39;
+            margin-bottom: 3rem;
+        }
+
+        .faq-list {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .faq-item {
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+        }
+
+        .faq-item:last-child {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #252638;
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .faq-answer p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #5c5d6b;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        @media (min-width: 1024px) {
+            .faq h2 {
+                font-size: 56px;
+                line-height: 72px;
+                font-weight: 700;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1f2937;
+            padding: 4rem 1rem;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .footer-section {
+            flex: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: hsla(0, 0%, 100%, 0.64);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+
+        @media (min-width: 1024px) {
+            .footer-content {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">SnapEdit</div>
+        <nav>
+            <ul>
+                <li><a href="#">Chỉnh sửa ảnh</a></li>
+                <li><a href="#">Công cụ</a></li>
+                <li><a href="#">Trợ giúp</a></li>
+                <li><a href="#">Tải về</a></li>
+                <li><a href="#">Đăng nhập</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="try-free-btn">Thử miễn phí</a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Chỉnh sửa ảnh Trực tuyến Với công cụ AI</h1>
+        <p>SnapEdit là công cụ chỉnh sửa ảnh trực tuyến dễ dàng và nhanh chóng, hỗ trợ trên cả máy tính và điện thoại.
+        </p>
+        <a href="#" class="try-free-btn">Thử miễn phí</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Web chỉnh sửa ảnh AI với bộ công cụ đa dạng</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <img src="/images/hero_banner.jpg" alt="Xóa vật thể">
+                <h3>Xóa vật thể</h3>
+                <p>AI tự động phát hiện và xóa vật thể không mong muốn khỏi ảnh chỉ với một nhấp chuột.</p>
+            </div>
+            <div class="feature-card">
+                <img src="/images/anh1.jpg" alt="Làm nét ảnh">
+                <h3>Làm nét ảnh</h3>
+                <p>Tự động tăng độ phân giải và chất lượng tổng thể của ảnh.</p>
+            </div>
+            <div class="feature-card">
+                <img src="/images/anh2.jpg" alt="Xóa nền">
+                <h3>Xóa nền</h3>
+                <p>Xóa nền ảnh nhanh chóng bằng AI để sáng tạo với hơn 100 mẫu thiết kế sẵn.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <h2>Hành trình đằng sau ứng dụng chỉnh sửa ảnh AI - SnapEdit</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>Hơn 300 triệu</h3>
+                <p>Hình ảnh đã xử lý</p>
+            </div>
+            <div class="stat-item">
+                <h3>Hơn 20 triệu</h3>
+                <p>Người dùng</p>
+            </div>
+            <div class="stat-item">
+                <h3>Xếp hạng 4.9/5 sao</h3>
+                <p>Trên App Store</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download">
+        <h2>Tải SnapEdit ứng dụng di động</h2>
+        <p>Hãy thử ứng dụng di động của chúng tôi để trải nghiệm người dùng tốt hơn và hiệu suất xuất sắc.</p>
+        <div class="download-links">
+            <img src="/images/anh4.jpg" alt="App Store">
+
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <h2>Câu Hỏi Thường Gặp</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>SnapEdit.App là gì?</h3>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>SnapEdit là một công cụ chỉnh sửa ảnh trực tuyến sử dụng AI, giúp bạn chỉnh sửa ảnh dễ dàng và
+                        nhanh chóng.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Snapedit có miễn phí không?</h3>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Có, SnapEdit cung cấp phiên bản miễn phí với các tính năng cơ bản. Bạn cũng có thể nâng cấp để sử
+                        dụng các tính năng cao cấp.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Tôi có thể chỉnh sửa ảnh trên điện thoại di động bằng Snapedit.App không?</h3>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Có, SnapEdit hỗ trợ cả trên máy tính và điện thoại di động thông qua ứng dụng hoặc trình duyệt.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tính năng mới</h3>
+                <ul>
+                    <li><a href="#">Thêm watermark</a></li>
+                    <li><a href="#">Chuyển Đổi Ảnh</a></li>
+                    <li><a href="#">Nén Ảnh</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Công cụ</h3>
+                <ul>
+                    <li><a href="#">Xóa Vật Thể</a></li>
+                    <li><a href="#">Xóa Nền Ảnh</a></li>
+                    <li><a href="#">Làm Nét Ảnh</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Trợ giúp</h3>
+                <ul>
+                    <li><a href="#">Blog & Hướng dẫn</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Liên hệ chúng tôi</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
